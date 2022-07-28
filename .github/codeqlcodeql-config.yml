@@ -1,4 +1,0 @@
-name: "CodeQL code scanning custom configuration"
-disable-default-queries: false
-paths-ignore:
-  - '.nuget'

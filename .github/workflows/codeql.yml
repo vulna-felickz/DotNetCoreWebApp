@@ -53,7 +53,9 @@ jobs:
           
     - name: ls
       if: matrix.language == 'javascript'      
-      run: ls -l
+      run: |
+        cd DotNetCoreWebApp
+        ls -l
       
 
     # Initializes the CodeQL tools for scanning.

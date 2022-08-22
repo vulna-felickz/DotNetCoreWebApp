@@ -47,9 +47,9 @@ jobs:
       uses: snow-actions/sparse-checkout@v1.1.0
       with:      
         patterns: |
-          '!/*'
-          '**/js'
-          '**/*.js'          
+          DotNetCoreWebApp/wwwroot/js/
+          DotNetCoreWebApp2/wwwroot/js/
+          
           
     - name: ls
       if: matrix.language == 'javascript'      

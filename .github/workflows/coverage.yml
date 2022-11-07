@@ -27,6 +27,7 @@ jobs:
         uses: 5monkeys/cobertura-action@v13
         with:
           path: ./DotNetCoreWebApp.Tests/**/coverage.cobertura.xml
+          minimum_coverage: 100
         
       - name: Upload Test Results
         uses: actions/upload-artifact@v2

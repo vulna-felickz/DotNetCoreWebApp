@@ -27,12 +27,12 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: TestResults
-          path: ./DotNetCoreWebApp/DotNetCoreWebApp.Tests/TestResults
+          path: ./DotNetCoreWebApp.Tests/TestResults
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v2
         with:
           name: CoverageResults
-          path: ./DotNetCoreWebApp/DotNetCoreWebApp.Tests/**/coverage.cobertura.xml
+          path: ./DotNetCoreWebApp.Tests/**/coverage.cobertura.xml
 
 

@@ -11,12 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:     
       - uses: actions/checkout@v2
+      
+      - name: debug output
+        run: |
+          ls -l
 
       - name: Build
         run: |
           dotnet restore
           dotnet build
-          cd ./DotNetCoreWebApp/DotNetCoreWebApp.Tests
+          cd ./DotNetCoreWebApp.Tests
           dotnet test --collect:"XPlat Code Coverage"
         
       - name: Upload Test Results

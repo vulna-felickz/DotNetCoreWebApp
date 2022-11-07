@@ -22,6 +22,11 @@ jobs:
           dotnet build
           cd ./DotNetCoreWebApp.Tests
           dotnet test --collect:"XPlat Code Coverage"
+          
+      - name: cobertura-report
+        uses: 5monkeys/cobertura-action@v13
+        with:
+          path: ./DotNetCoreWebApp.Tests/**/coverage.cobertura.xml
         
       - name: Upload Test Results
         uses: actions/upload-artifact@v2

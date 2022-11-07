@@ -1,0 +1,34 @@
+name: "Unit Test and Coverage"
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '12 9 * * 4'
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:     
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          dotnet restore
+          dotnet build
+          cd ./DotNetCoreWebApp/DotNetCoreWebApp.Tests
+          dotnet test --collect:"XPlat Code Coverage"
+        
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: TestResults
+          path: ./DotNetCoreWebApp/DotNetCoreWebApp.Tests/TestResults
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: CoverageResults
+          path: ./DotNetCoreWebApp/DotNetCoreWebApp.Tests/**/coverage.cobertura.xml
+
+

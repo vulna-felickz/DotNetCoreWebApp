@@ -236,3 +236,8 @@ $RECYCLE.BIN/
 
 *.rar
 /.vs
+
+/codeql-database
+/codeql-db
+csharp.*.txt
+*.trap.br

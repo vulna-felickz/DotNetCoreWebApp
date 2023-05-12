@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace DotNetCoreWebApp
 {
@@ -29,6 +31,8 @@ namespace DotNetCoreWebApp
 
             //Fluentvalidation
             services.AddScoped<IValidator<ErrorViewModel>, ErrorViewModelValidator>();
+
+            services.AddDbContext<ErrorViewModelContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ErrorViewModelContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

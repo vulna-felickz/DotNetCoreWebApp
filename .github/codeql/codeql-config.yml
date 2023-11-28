@@ -1,0 +1,13 @@
+name: "My CodeQL config"
+
+queries:
+  #uses: csharp-security-extended.qls
+  #NOTE: instead we could pass an array of suites that are lang specific on those cluster runs
+  - uses: csharp-security-extended.qls
+  - uses: javascript-security-extended.qls
+
+paths-ignore:
+  - 'tmp/**'
+query-filters:
+  - exclude:
+      id: cs/uncontrolled-format-string

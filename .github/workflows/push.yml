@@ -22,6 +22,9 @@ jobs:
         run: |
           dotnet restore
           dotnet build
+
+      - name: Component detection 
+        uses: advanced-security/component-detection-dependency-submission-action@v0.0.2
         
       - name: Convert sarif for uploading to GitHub
         uses: security-code-scan/security-code-scan-results-action@main

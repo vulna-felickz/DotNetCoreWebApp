@@ -96,6 +96,16 @@ public class ErrorController : ControllerBase
 
             return new JsonResult(new { result = myobj });
         }
+        
+        [HttpPost]
+        public IActionResult PostDeserializeSimplePRDEMO(string unsafeDeserializePRDEMO)
+        {
+            Byte[] bytes = Encoding.UTF8.GetBytes(unsafeDeserializePRDEMO);
+            BinaryFormatter formatter = new BinaryFormatter();
+            var myobj =  formatter.Deserialize(new MemoryStream(bytes));
+
+            return new JsonResult(new { result = myobj });
+        }
 
         [HttpPost]
         public IActionResult PostDeserializeComplex([FromForm]ErrorViewModel modelUnsafeDeserialize)

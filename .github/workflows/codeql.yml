@@ -39,7 +39,27 @@ jobs:
 
     steps:
     - name: Checkout repository
+      if: matrix.language == 'csharp'
       uses: actions/checkout@v3
+
+      #https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
+    - name: Sparse checkout action
+      if: matrix.language == 'javascript'
+      uses: snow-actions/sparse-checkout@v1.1.0
+      with:      
+          #DotNetCoreWebApp/wwwroot/js/
+          #DotNetCoreWebApp2/wwwroot/js/
+        patterns: |
+          !/*
+          **/*.js
+          
+          
+    - name: ls
+      if: matrix.language == 'javascript'      
+      run: |
+        cd DotNetCoreWebApp
+        ls -l
+      
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL

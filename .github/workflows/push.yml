@@ -14,7 +14,10 @@ jobs:
         os: [ubuntu-latest, windows-latest]      
         # os: [ubuntu-latest, windows-latest, macos-latest]
     steps:     
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '3.1.x'      
 
       - name: Set up projects
         uses: security-code-scan/security-code-scan-add-action@main
@@ -25,11 +28,8 @@ jobs:
           dotnet build
 
       - name: Component detection 
-        uses: advanced-security/component-detection-dependency-submission-action@v0.0.2
+        uses: advanced-security/component-detection-dependency-submission-action@main
         
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '3.1.x'
         
       - name: Convert sarif for uploading to GitHub
         uses: security-code-scan/security-code-scan-results-action@main

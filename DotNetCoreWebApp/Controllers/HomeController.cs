@@ -7,8 +7,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DotNetCoreWebApp.Controllers
@@ -17,11 +19,13 @@ namespace DotNetCoreWebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IValidator<ErrorViewModel> _validator;
+        private readonly string _aesKey;
 
         public HomeController(ILogger<HomeController> logger, IValidator<ErrorViewModel> validator)
         {
             _logger = logger;
             _validator = validator;
+            _aesKey = "TXkgU3VwZXIgU2VjdXJlIEFFUyBLZXkK"; 
         }
 
         public IActionResult Index()
@@ -54,11 +58,16 @@ namespace DotNetCoreWebApp.Controllers
         public IActionResult ProcessRequest(HttpContext ctx)
         {
             string format = ctx.Request.Form["nameformat"];
+
             string Surname = "test", Forenames="test", FormattedName;
             // BAD: Uncontrolled format string.
             FormattedName = string.Format(format, Surname, Forenames);
 
-            return View(new ErrorViewModel { RequestId = FormattedName });
+            // Encrypt the Name            
+            var encrytpedNameFormat = Encrypt(FormattedName, Convert.FromBase64String(_aesKey), Encoding.ASCII.GetBytes("IV-goes-here"));
+
+
+            return View(new ErrorViewModel { RequestId = FormattedName + encrytpedNameFormat });
         }
 
         [HttpGet]
@@ -100,7 +109,6 @@ namespace DotNetCoreWebApp.Controllers
                 return View("Create", model);
             }
 
-
             string format = model.RequestId;
             string Surname = "test", Forenames="test", FormattedName;
             // BAD: Uncontrolled format string.
@@ -114,6 +122,23 @@ namespace DotNetCoreWebApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        internal static byte[] Encrypt(string message, byte[] key, byte[] iv)
+        {
+            using var aesAlg = Aes.Create();
+            aesAlg.Key = key;
+            aesAlg.IV = iv;
+
+            var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+            using var ms = new MemoryStream();
+            using var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
+            using (var sw = new StreamWriter(cs))
+            {
+                sw.Write(message); // Write all data to the stream.
+            }
+            return ms.ToArray();
         }
     }
 }
